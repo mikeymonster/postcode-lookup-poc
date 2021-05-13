@@ -1,38 +1,32 @@
 ﻿$(document).ready(function () {
-    if (typeof (postcodeAnywhereApiKey) !== 'undefined')
-        console.log(`API Key is ${postcodeAnywhereApiKey}`);
-});
-
-/*
- From github:
- * $(document).ready(function () {
-
     $(document).on("change", ".address-item", function () {
-        $("#Address_Latitude").val("");
-        $("#Address_Longitude").val("");
+        $("#Latitude").val("");
+        $("#Longitude").val("");
     });
 });
 
 // provides the matching addresses from postcode
+//if (typeof (postcodeAnywhereApiKey) !== 'undefined')
 (function ($) {
-
     var searchContext = "",
-        uri = $('form').attr('action'),
+        //uri = $('form').attr('action'),
         findAddressVal = $("#postcode-search").val();
 
-    $('#enterAddressManually').on('click', function (e) {
-        e.preventDefault();
-        $('#addressManualWrapper').unbind('click');
+    $('#enterAddressManually').on('click',
+        function (e) {
+            e.preventDefault();
+            $('#addressManualWrapper').unbind('click');
 
-        $('#address-details').removeClass('disabled');
-        $('#Address_AddressLine1').focus();
-    });
+            $('#address-details').removeClass('disabled');
+            $('#AddressLine1').focus();
+        });
 
-    $('#addressManualWrapper').bind('click', function () {
-        $(this).unbind('click');
-        $('#address-details').removeClass('disabled');
-        $('#Address_AddressLine1').focus();
-    });
+    $('#addressManualWrapper').bind('click',
+        function () {
+            $(this).unbind('click');
+            $('#address-details').removeClass('disabled');
+            $('#AddressLine1').focus();
+        });
 
     $("#postcode-search").keyup(function () {
         findAddressVal = $(this).val();
@@ -51,6 +45,8 @@
                 },
                 timeout: 5000,
                 success: function (data) {
+                    //console.log(JSON.stringify(data));
+
                     $('#postcodeServiceUnavailable').hide();
                     $('#enterAddressManually').hide();
                     $('#addressLoading').show();
@@ -85,9 +81,9 @@
             }
         },
         select: function (event, ui) {
-            var item = ui.item.data
+            var item = ui.item.data;
 
-            if (item.Next == "Retrieve") {
+            if (item.Next === "Retrieve") {
                 //retrieve the address
                 retrieveAddress(item.Id);
             } else {
@@ -107,7 +103,6 @@
                         field.autocomplete("search", item.Id);
                     });
                 }
-
             }
         },
         focus: function (event, ui) {
@@ -155,41 +150,40 @@
     }
 
     function populateAddress(address) {
-        if (!$('#Companyname').val()) {
-            $('#Companyname').val(address.Company);
+        if (!$('#CompanyName').val()) {
+            $('#CompanyName').val(address.Company);
         }
-        $('#Address_AddressLine1').val(address.Line1);
-        $('#Address_AddressLine2').val(address.Line2);
-        $('#Address_AddressLine3').val(address.Line3);
-        $('#Address_City').val(address.City);
-        $('#Address_Postcode').val(address.PostalCode);
+        $('#AddressLine1').val(address.Line1);
+        $('#AddressLine2').val(address.Line2);
+        $('#AddressLine3').val(address.Line3);
+        $('#AddressCity').val(address.City);
+        $('#Postcode').val(address.PostalCode);
 
         $('#ariaAddressEntered').text('Your address has been entered into the fields below.');
 
         populateLatLng(address);
-        Webtrends.multiTrack({ element: this, argsa: ["DCS.dcsuri", uri + "/findaddress", "WT.dl", "99", "WT.ti", "Settings – Find Address"] });
+
+        //Webtrends.multiTrack({ element: this, argsa: ["DCS.dcsuri", uri + "/findaddress", "WT.dl", "99", "WT.ti", "Settings – Find Address"] });
     }
 
     function populateLatLng(address) {
         var url = "https://api.postcodes.io/postcodes/" + address.PostalCode,
-                json;
+            json;
 
         $.get(url)
-        .done(function (data) {
-            json = data;
+            .done(function (data) {
+                json = data;
 
-            if (json.status == 200 && json.result !== null) {
-                $("#Address_Latitude").val(json.result.latitude);
-                $("#Address_Longitude").val(json.result.longitude);
-            } else {
-                //console.log("Nope");
-            }
+                if (json.status === 200 && json.result !== null) {
+                    $("#Latitude").val(json.result.latitude);
+                    $("#Longitude").val(json.result.longitude);
+                } else {
+                    //console.log("Call to get lat-long failed");
+                }
 
-        })
-        .fail(function () {
-            //console.log("failed");
-        });
+            })
+            .fail(function () {
+                //console.log("call to get lat-long failed");
+            });
     }
-
 })(jQuery);
- */
